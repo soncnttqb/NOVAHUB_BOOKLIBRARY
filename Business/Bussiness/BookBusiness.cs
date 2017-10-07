@@ -1,97 +1,44 @@
-﻿using System;
+﻿
+using Business.Models;
+using Business.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace Business.Bussiness
 {
-    public static class BookBusiness
+    public class BookBusiness : BaseBusiness
     {
-        public static BookSearchResultModel Search(BookSearchCriteriaModel model)
+        public BookSearchResultModel Search(BookSearchCriteriaModel model)
         {
-            using (var client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-
-                HttpResponseMessage response = client.GetAsync("api/Book/Search?title="
-                    + model.Title + "&des="
-                    + model.Description + "&filter="
-                    + model.Filter + "&pagesize="
-                    + model.PageSize + "&pageindex="
-                    + model.PageIndex).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<BookSearchResultModel>().Result;
-                }
-            }
-            return new BookSearchResultModel();
+            string url = "api/Book/Search?title=" + model.Title
+                    + "&description=" + model.Description
+                    + "&publisher=" + model.Publisher
+                    + "&year=" + model.Year
+                    + "&category=" + model.Category
+                    + "&author=" + model.Author
+                    + "&pagesize=" + model.PageSize
+                    + "&pageindex=" + model.PageIndex;
+            return DoRequest<BookSearchResultModel, BookSearchResultModel>(url, Enums.RequestType.Get, null);
         }
-        public static List<BookModel> GetAll()
+        public BookModel Get(int id)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.GetAsync("api/Book/GetAll").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<List<BookModel>>().Result;
-                }
-            }
-            return null;
+            return DoRequest<BookModel, BookModel>("api/Book/Get/" + id, Enums.RequestType.Get, null);
         }
-        public static BookModel Get(int id)
+        public ResponseModel Add(BookModel model)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.GetAsync("api/Book/Get/" + id).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<BookModel>().Result;
-                }
-            }
-            return null;
+            return DoRequest<ResponseModel, BookModel>("api/Book/Add", Enums.RequestType.Post, model);
         }
-        public static ResponseModel Add(BookModel model)
+        public ResponseModel Update(BookModel model)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.PostAsJsonAsync("api/Book/Add", model).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<ResponseModel>().Result;
-                }
-            }
-            return null;
+            return DoRequest<ResponseModel, BookModel>("api/Book/Update", Enums.RequestType.Put, model);
         }
-        public static ResponseModel Update(BookModel model)
+        public ResponseModel Delete(int id)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.PutAsJsonAsync("api/Book/Update", model).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<ResponseModel>().Result;
-                }
-            }
-            return null;
-        }
-        public static ResponseModel Delete(int id)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.DeleteAsync("api/Book/Delete/" + id).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<ResponseModel>().Result;
-                }
-            }
-            return null;
+            return DoRequest<ResponseModel, BookModel>("api/Book/Delete/" + id, Enums.RequestType.Delete, null);
         }
     }
 }

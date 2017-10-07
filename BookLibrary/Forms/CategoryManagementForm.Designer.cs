@@ -1,4 +1,4 @@
-﻿namespace BookLibrary
+﻿namespace BookLibrary.Forms
 {
     partial class CategoryManagementForm
     {
@@ -62,10 +62,10 @@
             this.txtTitle.Size = new System.Drawing.Size(358, 20);
             this.txtTitle.TabIndex = 1;
             this.txtTitle.TextChanged += new System.EventHandler(this.control_TextChanged);
-            this.txtTitle.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtTitle_KeyUp);
             // 
             // txtDescription
             // 
+            this.txtDescription.AcceptsReturn = true;
             this.txtDescription.Location = new System.Drawing.Point(81, 45);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
@@ -84,6 +84,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(364, 185);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -94,9 +95,11 @@
             // 
             // CategoryManagementForm
             // 
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(456, 220);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
@@ -111,7 +114,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Category";
             this.Load += new System.EventHandler(this.CategoryManagementForm_Load);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CategoryManagementForm_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 

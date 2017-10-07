@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Business.Models;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -7,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace Business.Utilities
 {
     public static class Utils
     {
@@ -33,7 +35,7 @@ namespace Business
 
         internal static void ConfigHttpClient(HttpClient client)
         {
-            string baseAddress = System.Configuration.ConfigurationManager.AppSettings["BaseAddress"];
+            string baseAddress = ConfigurationManager.AppSettings[Constants.ConfigKey.BaseAddress];
             client.BaseAddress = new Uri(baseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

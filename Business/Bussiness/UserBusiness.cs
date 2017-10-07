@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Business.Models;
+using Business.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -6,27 +8,18 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace Business.Bussiness
 {
-    public static class UserBusiness
+    public class UserBusiness : BaseBusiness
     {
-
-        public static GenericPrincipal Login(UserModel user)
+        public GenericPrincipal Login(UserModel user)
         {
             string passHash = Utils.GetMd5Hash(user.Password);
-            using (var client = new HttpClient())
+            string url = "api/User/Login?email=" + user.Email + "&password=" + passHash;
+            UserModel result = DoRequest<UserModel, UserModel>(url, Enums.RequestType.Get, null);
+            if (result != null)
             {
-                Utils.ConfigHttpClient(client);
-
-                HttpResponseMessage response = client.GetAsync("api/User/Login?email=" + user.Email + "&password=" + passHash).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    UserModel result = response.Content.ReadAsAsync<UserModel>().Result;
-                    if (result != null)
-                    {
-                        return new GenericPrincipal(new GenericIdentity(result.Email), new string[] { result.RoleType });
-                    }
-                }
+                return new GenericPrincipal(new GenericIdentity(result.Email), new string[] { result.RoleType });
             }
             return null;
         }

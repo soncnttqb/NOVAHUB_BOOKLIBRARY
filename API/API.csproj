@@ -155,19 +155,11 @@
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CategorySearchResultDTO.cs" />
-    <Compile Include="Models\BookDTO.cs" />
-    <Compile Include="Models\AuthorDTO.cs" />
-    <Compile Include="Models\AuthorSearchResultDTO.cs" />
-    <Compile Include="Models\BookSearchResultDTO.cs" />
-    <Compile Include="Models\CategoryDTO.cs" />
-    <Compile Include="Models\ResponseDTO.cs" />
-    <Compile Include="Models\RoleDTO.cs" />
-    <Compile Include="Models\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -185,11 +177,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Entities\Entities.csproj">
-      <Project>{3fbe1255-68a1-42a7-a712-48da871d0b81}</Project>
-      <Name>Entities</Name>
+    <ProjectReference Include="..\APIBusiness\APIBusiness.csproj">
+      <Project>{ef216144-948b-4dc6-8724-19ff683e8964}</Project>
+      <Name>APIBusiness</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -1,4 +1,6 @@
-﻿namespace BookLibrary
+﻿using BookLibrary.UcControls;
+
+namespace BookLibrary.Forms
 {
     partial class BooksForm
     {
@@ -48,14 +50,20 @@
             this.txtDescriptionCategory = new System.Windows.Forms.TextBox();
             this.txtCategory = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtFilter = new System.Windows.Forms.TextBox();
+            this.txtYear = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtCategorySearch = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtAuthorSearch = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtPublisher = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtBook = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.ucPagingBook = new BookLibrary.UcPaging();
+            this.ucPagingBook = new BookLibrary.UcControls.UcPaging();
             ((System.ComponentModel.ISupportInitialize)(this.grdList)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAuthor)).BeginInit();
@@ -99,6 +107,8 @@
             this.grdList.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Info;
             this.grdList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.grdList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grdList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdList.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -130,6 +140,8 @@
             this.grdList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdList.Size = new System.Drawing.Size(876, 111);
             this.grdList.TabIndex = 6;
+            this.grdList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GrdList_CellDoubleClick);
+            this.grdList.SelectionChanged += new System.EventHandler(this.GrdList_SelectionChanged);
             // 
             // colTitle
             // 
@@ -171,7 +183,7 @@
             this.groupBox1.Controls.Add(this.pictureBoxAuthor);
             this.groupBox1.Location = new System.Drawing.Point(12, 255);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(516, 190);
+            this.groupBox1.Size = new System.Drawing.Size(584, 190);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Author";
@@ -182,7 +194,7 @@
             this.txtDescriptionAuthor.Multiline = true;
             this.txtDescriptionAuthor.Name = "txtDescriptionAuthor";
             this.txtDescriptionAuthor.ReadOnly = true;
-            this.txtDescriptionAuthor.Size = new System.Drawing.Size(313, 139);
+            this.txtDescriptionAuthor.Size = new System.Drawing.Size(380, 139);
             this.txtDescriptionAuthor.TabIndex = 4;
             // 
             // txtAuthor
@@ -190,7 +202,7 @@
             this.txtAuthor.Location = new System.Drawing.Point(192, 19);
             this.txtAuthor.Name = "txtAuthor";
             this.txtAuthor.ReadOnly = true;
-            this.txtAuthor.Size = new System.Drawing.Size(313, 20);
+            this.txtAuthor.Size = new System.Drawing.Size(380, 20);
             this.txtAuthor.TabIndex = 2;
             // 
             // pictureBoxAuthor
@@ -205,85 +217,147 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.txtDescriptionCategory);
             this.groupBox2.Controls.Add(this.txtCategory);
-            this.groupBox2.Location = new System.Drawing.Point(534, 255);
+            this.groupBox2.Location = new System.Drawing.Point(602, 255);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(353, 190);
+            this.groupBox2.Size = new System.Drawing.Size(285, 190);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Category";
             // 
             // txtDescriptionCategory
             // 
+            this.txtDescriptionCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescriptionCategory.Location = new System.Drawing.Point(15, 45);
             this.txtDescriptionCategory.Multiline = true;
             this.txtDescriptionCategory.Name = "txtDescriptionCategory";
             this.txtDescriptionCategory.ReadOnly = true;
-            this.txtDescriptionCategory.Size = new System.Drawing.Size(325, 139);
+            this.txtDescriptionCategory.Size = new System.Drawing.Size(257, 139);
             this.txtDescriptionCategory.TabIndex = 6;
             // 
             // txtCategory
             // 
+            this.txtCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCategory.Location = new System.Drawing.Point(15, 19);
             this.txtCategory.Name = "txtCategory";
             this.txtCategory.ReadOnly = true;
-            this.txtCategory.Size = new System.Drawing.Size(325, 20);
+            this.txtCategory.Size = new System.Drawing.Size(257, 20);
             this.txtCategory.TabIndex = 5;
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.txtFilter);
+            this.panel1.Controls.Add(this.txtYear);
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.txtCategorySearch);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.txtAuthorSearch);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.txtPublisher);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Controls.Add(this.txtDescription);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.txtBook);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Location = new System.Drawing.Point(12, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(875, 54);
+            this.panel1.Size = new System.Drawing.Size(875, 62);
             this.panel1.TabIndex = 0;
             // 
-            // txtFilter
+            // txtYear
             // 
-            this.txtFilter.Location = new System.Drawing.Point(568, 17);
-            this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(172, 20);
-            this.txtFilter.TabIndex = 3;
-            this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
+            this.txtYear.Location = new System.Drawing.Point(592, 32);
+            this.txtYear.MaxLength = 4;
+            this.txtYear.Name = "txtYear";
+            this.txtYear.Size = new System.Drawing.Size(89, 20);
+            this.txtYear.TabIndex = 6;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(551, 35);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(32, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Year:";
+            // 
+            // txtCategorySearch
+            // 
+            this.txtCategorySearch.Location = new System.Drawing.Point(333, 33);
+            this.txtCategorySearch.Name = "txtCategorySearch";
+            this.txtCategorySearch.Size = new System.Drawing.Size(175, 20);
+            this.txtCategorySearch.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(275, 36);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(52, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Category:";
+            // 
+            // txtAuthorSearch
+            // 
+            this.txtAuthorSearch.Location = new System.Drawing.Point(60, 33);
+            this.txtAuthorSearch.Name = "txtAuthorSearch";
+            this.txtAuthorSearch.Size = new System.Drawing.Size(175, 20);
+            this.txtAuthorSearch.TabIndex = 4;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Author:";
+            // 
+            // txtPublisher
+            // 
+            this.txtPublisher.Location = new System.Drawing.Point(592, 7);
+            this.txtPublisher.Name = "txtPublisher";
+            this.txtPublisher.Size = new System.Drawing.Size(173, 20);
+            this.txtPublisher.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(533, 20);
+            this.label3.Location = new System.Drawing.Point(533, 10);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(32, 13);
+            this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 14;
-            this.label3.Text = "Filter:";
+            this.label3.Text = "Publisher:";
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(746, 15);
+            this.btnSearch.Location = new System.Drawing.Point(786, 30);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnSearch.TabIndex = 4;
+            this.btnSearch.TabIndex = 7;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(295, 17);
+            this.txtDescription.Location = new System.Drawing.Point(333, 7);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(220, 20);
+            this.txtDescription.Size = new System.Drawing.Size(175, 20);
             this.txtDescription.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(226, 20);
+            this.label2.Location = new System.Drawing.Point(264, 10);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 0;
@@ -291,15 +365,15 @@
             // 
             // txtBook
             // 
-            this.txtBook.Location = new System.Drawing.Point(44, 17);
+            this.txtBook.Location = new System.Drawing.Point(60, 7);
             this.txtBook.Name = "txtBook";
-            this.txtBook.Size = new System.Drawing.Size(157, 20);
+            this.txtBook.Size = new System.Drawing.Size(175, 20);
             this.txtBook.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 20);
+            this.label1.Location = new System.Drawing.Point(19, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 0;
@@ -307,15 +381,18 @@
             // 
             // ucPagingBook
             // 
+            this.ucPagingBook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ucPagingBook.Location = new System.Drawing.Point(626, 224);
             this.ucPagingBook.Name = "ucPagingBook";
             this.ucPagingBook.PageIndex = 1;
             this.ucPagingBook.Size = new System.Drawing.Size(261, 31);
             this.ucPagingBook.TabIndex = 12;
             this.ucPagingBook.TotalRecord = 0;
+            this.ucPagingBook.ExecutePaging += new BookLibrary.UcControls.UcPaging.PagingHandler(this.UcPagingBook_ExecutePaging);
             // 
             // BooksForm
             // 
+            this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(903, 566);
@@ -365,8 +442,14 @@
         private System.Windows.Forms.TextBox txtBook;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.TextBox txtFilter;
+        private System.Windows.Forms.TextBox txtPublisher;
         private System.Windows.Forms.Label label3;
         private UcPaging ucPagingBook;
+        private System.Windows.Forms.TextBox txtCategorySearch;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtAuthorSearch;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtYear;
+        private System.Windows.Forms.Label label6;
     }
 }

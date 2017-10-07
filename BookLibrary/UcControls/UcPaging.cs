@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using Business.Utilities;
 
-namespace BookLibrary
+namespace BookLibrary.UcControls
 {
     public partial class UcPaging : UserControl
     {
@@ -17,7 +18,7 @@ namespace BookLibrary
         public event PagingHandler ExecutePaging;
 
         public int TotalRecord { get; set; }
-        public int PageSize { get { return int.Parse(ConfigurationManager.AppSettings["PageSize"].ToString()); } }
+        public int PageSize { get { return int.Parse(ConfigurationManager.AppSettings[Constants.ConfigKey.PageSize].ToString()); } }
         public int PageIndex { get; set; }
         public int TotalPage
         {
@@ -42,9 +43,9 @@ namespace BookLibrary
         {
             btnFirst.Enabled = btnPrevious.Enabled = PageIndex > 1 && TotalPage > 1;
             btnNext.Enabled = btnLast.Enabled = PageIndex < TotalPage && TotalPage > 1;
-            lblTotalPage.Text = string.Format("/{0} {1}", TotalPage, TotalPage > 1 ? "Pages" : "Page");
+            lblTotalPage.Text = $"/{TotalPage} {(TotalPage > 1 ? "Pages" : "Page")}";
         }
-        
+
         public void ResetPaging()
         {
             numPageIndex.Value = 1;
@@ -73,7 +74,7 @@ namespace BookLibrary
         private void numPageIndex_ValueChanged(object sender, EventArgs e)
         {
             PageIndex = (int)numPageIndex.Value;
-            ExecutePaging(PageIndex);
+            ExecutePaging?.Invoke(PageIndex);
         }
     }
 }

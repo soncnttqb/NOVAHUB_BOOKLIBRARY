@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace APIBusiness.DataTransferObject
 {
-    public class RoleModel
+    public class AuthorSearchCriteriaDTO : BaseSearchCriteriaDTO
     {
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace BookLibrary
+﻿namespace BookLibrary.Forms
 {
     partial class BookManagementForm
     {
@@ -59,6 +59,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(457, 405);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -89,6 +90,7 @@
             // 
             // txtDescription
             // 
+            this.txtDescription.AcceptsReturn = true;
             this.txtDescription.Location = new System.Drawing.Point(98, 265);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
@@ -103,7 +105,6 @@
             this.txtBook.Size = new System.Drawing.Size(434, 20);
             this.txtBook.TabIndex = 2;
             this.txtBook.TextChanged += new System.EventHandler(this.control_TextChanged);
-            this.txtBook.KeyUp += new System.Windows.Forms.KeyEventHandler(this.control_KeyUp);
             // 
             // label2
             // 
@@ -150,7 +151,6 @@
             this.cboAuthor.Size = new System.Drawing.Size(222, 21);
             this.cboAuthor.TabIndex = 3;
             this.cboAuthor.TextChanged += new System.EventHandler(this.control_TextChanged);
-            this.cboAuthor.KeyUp += new System.Windows.Forms.KeyEventHandler(this.control_KeyUp);
             // 
             // cboCategory
             // 
@@ -161,7 +161,6 @@
             this.cboCategory.Size = new System.Drawing.Size(222, 21);
             this.cboCategory.TabIndex = 4;
             this.cboCategory.TextChanged += new System.EventHandler(this.control_TextChanged);
-            this.cboCategory.KeyUp += new System.Windows.Forms.KeyEventHandler(this.control_KeyUp);
             // 
             // txtPublisher
             // 
@@ -171,7 +170,6 @@
             this.txtPublisher.Size = new System.Drawing.Size(434, 20);
             this.txtPublisher.TabIndex = 6;
             this.txtPublisher.TextChanged += new System.EventHandler(this.control_TextChanged);
-            this.txtPublisher.KeyUp += new System.Windows.Forms.KeyEventHandler(this.control_KeyUp);
             // 
             // label5
             // 
@@ -191,7 +189,6 @@
             this.cboYear.Size = new System.Drawing.Size(123, 21);
             this.cboYear.TabIndex = 5;
             this.cboYear.TextChanged += new System.EventHandler(this.control_TextChanged);
-            this.cboYear.KeyUp += new System.Windows.Forms.KeyEventHandler(this.control_KeyUp);
             // 
             // label6
             // 
@@ -204,8 +201,10 @@
             // 
             // BookManagementForm
             // 
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(571, 460);
             this.Controls.Add(this.cboYear);
             this.Controls.Add(this.label6);
@@ -229,7 +228,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Book";
             this.Load += new System.EventHandler(this.BookManagementForm_Load);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.BookManagementForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.picCoverPhoto)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace Business.Utilities
 {
     public class Constants
     {
@@ -13,8 +13,12 @@ namespace Business
         public const string WrongExtensionFile = "You must select a image file.";
         public struct ConfigKey
         {
-            public const string ServerImageFolder = "ServerImageFolder";
             public const string TempFolder = "TempFolder";
+            public const string FilterExtension = "FilterExtension";
+            public const string BaseAddress = "BaseAddress";
+            public const string PageSize = "PageSize";
+            public const string Extensions = "Extensions";
+            public const string Host = "Host";
         }
     }
 }

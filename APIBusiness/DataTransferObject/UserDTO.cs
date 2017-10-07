@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace API
+namespace APIBusiness.DataTransferObject
 {
     public class UserDTO
     {

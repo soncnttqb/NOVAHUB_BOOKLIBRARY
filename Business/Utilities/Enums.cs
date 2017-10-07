@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace Business.Utilities
 {
     public class Enums
     {
@@ -18,6 +18,21 @@ namespace Business
         {
             Admin = 1,
             User = 2
+        }
+        public enum ResponseCode
+        {
+            Success = 1,
+            Duplicate = 2,
+            NotExist = 3,
+            InUse = 4,
+            Error = 5
+        }
+        public enum RequestType
+        {
+            Get = 1,
+            Post = 2,
+            Put = 3,
+            Delete = 4
         }
     }
 }

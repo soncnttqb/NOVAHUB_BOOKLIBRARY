@@ -9,12 +9,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BookLibrary
+namespace BookLibrary.Forms
 {
     public partial class MainForm : Form
     {
-        #region private
-        #endregion
         public MainForm()
         {
             InitializeComponent();
@@ -22,7 +20,9 @@ namespace BookLibrary
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Application.OpenForms["LoginForm"].Show();
+            string loginFormName = (new LoginForm()).Name;
+            Form openLoginForm = Application.OpenForms[loginFormName];
+            openLoginForm?.Show();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -33,7 +33,7 @@ namespace BookLibrary
 
         private void authorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showChildForm(new AuthorsForm());
+            showChildForm<AuthorsForm>();
         }
         private void CloseChildForm()
         {
@@ -44,7 +44,7 @@ namespace BookLibrary
         }
         private void booksToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showChildForm(new BooksForm());
+            showChildForm<BooksForm>();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -55,24 +55,28 @@ namespace BookLibrary
 
         private void categoriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showChildForm(new CategoriesForm());
+            showChildForm<CategoriesForm>();
         }
-        private void showChildForm(Form form)
+        private void showChildForm<T>() where T : Form
         {
-            foreach (var mdiChild in this.MdiChildren)
+            var existingForm = this.MdiChildren.OfType<T>().FirstOrDefault();
+            if (existingForm != null)
             {
-                if (mdiChild.Name.Equals(form.Name))
-                {
-                    mdiChild.Activate();
-                    return;
-                }
+                existingForm.Activate();
+                return;
             }
             CloseChildForm();
+            var form = Activator.CreateInstance<T>();
             form.MdiParent = this;
             form.FormBorderStyle = FormBorderStyle.None;
             form.Dock = DockStyle.Fill;
             form.Show();
             this.Text = form.Text;
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            (new AboutForm()).ShowDialog();
         }
     }
 }

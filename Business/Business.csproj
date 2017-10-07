@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
@@ -51,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bussiness\BaseBusiness.cs" />
     <Compile Include="Bussiness\BookBusiness.cs" />
     <Compile Include="Bussiness\AuthorBusiness.cs" />
     <Compile Include="Bussiness\CategoryBusiness.cs" />
@@ -64,14 +66,15 @@
     <Compile Include="Models\BookSearchResultModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
-    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\SelectionItem.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Constants.cs" />
+    <Compile Include="Utilities\ControlError.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\ErrorProviderHelper.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
+    <Compile Include="Utilities\NetWorkHelper.cs" />
     <Compile Include="Utilities\Utils.cs" />
   </ItemGroup>
   <ItemGroup>

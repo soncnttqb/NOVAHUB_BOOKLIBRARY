@@ -9,52 +9,54 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Business;
-using static Business.Enums;
+using Business.Models;
+using Business.Bussiness;
+using Business.Utilities;
+using static Business.Utilities.Enums;
 
-namespace BookLibrary
+namespace BookLibrary.Forms
 {
     public partial class CategoryManagementForm : Form
     {
         public delegate void SaveFormHandler(ResponseModel model);
         public event SaveFormHandler Save;
-        public int Id;
+        public int Id { get; set; }
+        private CategoryBusiness _categoryBusienss = new CategoryBusiness();
         public CategoryManagementForm()
         {
             InitializeComponent();
         }
 
+        private void setTitleForForm()
+        {
+            this.Text = this.Id == 0 ? "Add Category" : "Edit Category";
+        }
+
         private void CategoryManagementForm_Load(object sender, EventArgs e)
         {
-            if (this.Id == 0)
+            setTitleForForm();
+            if (this.Id == 0) return;
+            CategoryModel model = _categoryBusienss.Get(this.Id);
+            if (model != null)
             {
-                this.Text = "Add Category";
-            }
-            else
-            {
-                this.Text = "Edit Category";
-                CategoryModel model = CategoryBusiness.Get(this.Id);
-                if (model != null)
-                {
-                    txtTitle.Text = model.Title;
-                    txtDescription.Text = model.Description;
-                }
+                txtTitle.Text = model.Title;
+                txtDescription.Text = model.Description;
             }
         }
-        
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (IsValidForm())
             {
                 CategoryModel model = new CategoryModel() { Id = this.Id, Title = txtTitle.Text.Trim(), Description = txtDescription.Text.Trim() };
 
-                executeResponse(this.Id == 0 ? CategoryBusiness.Add(model) : CategoryBusiness.Update(model));
+                executeResponse(this.Id == 0 ? _categoryBusienss.Add(model) : _categoryBusienss.Update(model));
             }
             else
             {
                 ErrorProviderHelper.FocusFirstControl();
             }
         }
-
 
         private bool IsValidForm()
         {
@@ -71,14 +73,14 @@ namespace BookLibrary
         {
             if (response != null)
             {
-                switch (response.Message)
+                switch (response.ResponseCode)
                 {
-                    case "Duplicate":
+                    case ResponseCode.Duplicate:
                         {
                             MessageBox.Show("Category is exist in system.", MessageBoxCaption.Information.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         break;
-                    case "Success":
+                    case ResponseCode.Success:
                         {
                             if (this.Save != null)
                             {
@@ -87,12 +89,12 @@ namespace BookLibrary
                             this.Close();
                         }
                         break;
-                    case "NotExist":
+                    case ResponseCode.NotExist:
                         {
                             MessageBox.Show("Category is not exist in system.", MessageBoxCaption.Information.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         break;
-                    case "InUse":
+                    case ResponseCode.InUse:
                         {
                             MessageBox.Show("Category is used in system.", MessageBoxCaption.Information.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
@@ -113,15 +115,6 @@ namespace BookLibrary
             this.Close();
         }
         
-        
-        private void txtTitle_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnSave.PerformClick();
-            }
-        }
-
         private void control_TextChanged(object sender, EventArgs e)
         {
             TextBox textbox = (TextBox)sender;
@@ -130,13 +123,6 @@ namespace BookLibrary
                 ErrorProviderHelper.ClearError(textbox);
             }
         }
-
-        private void CategoryManagementForm_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                this.Close();
-            }
-        }
+        
     }
 }

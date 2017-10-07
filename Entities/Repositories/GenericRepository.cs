@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace Entities.Repositories
 {
     public class GenericRepository<TEntity> where TEntity : class
     {

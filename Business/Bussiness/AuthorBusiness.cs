@@ -1,104 +1,62 @@
-﻿using System;
+﻿using Business.Models;
+using Business.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace Business.Bussiness
 {
-    public static class AuthorBusiness
+    public class AuthorBusiness:BaseBusiness
     {
-        public static AuthorSearchResultModel Search(BasePagingModel model)
+        public AuthorSearchResultModel Search(BasePagingModel model)
         {
-            using (var client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-
-                HttpResponseMessage response = client.GetAsync("api/Author/Search?pagesize=" + model.PageSize + "&pageindex="+ model.PageIndex).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<AuthorSearchResultModel>().Result;
-                }
-            }
-            return new AuthorSearchResultModel();
+            string url = "api/Author/Search?pagesize=" + model.PageSize + "&pageindex=" + model.PageIndex;
+            return DoRequest<AuthorSearchResultModel, AuthorSearchResultModel>(url, Enums.RequestType.Get, null);
         }
 
-        public static List<SelectionItem> GetSelectListAuthor()
+        public List<SelectionItem> GetSelectListAuthor()
         {
             List<SelectionItem> list = new List<SelectionItem>();
             list.Add(new SelectionItem() { ValueMember = 0, DisplayMember = string.Empty });
-            List<AuthorModel> authors = AuthorBusiness.GetAll();
+            List<AuthorModel> authors = GetAll();
             if (authors != null)
             {
                 list.AddRange((from au in authors select new SelectionItem() { ValueMember = au.Id, DisplayMember = au.Title }).ToList());
             }
             return list;
         }
-        public static List<AuthorModel> GetAll()
+        public List<AuthorModel> GetAll()
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.GetAsync("api/Author/GetAll").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<List<AuthorModel>>().Result;
-                }
-            }
-            return null;
+            return DoRequest<List<AuthorModel>, List<AuthorModel>>("api/Author/GetAll", Enums.RequestType.Get, null);
+            //using (HttpClient client = new HttpClient())
+            //{
+            //    Utils.ConfigHttpClient(client);
+            //    HttpResponseMessage response = client.GetAsync("api/Author/GetAll").Result;
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        return response.Content.ReadAsAsync<List<AuthorModel>>().Result;
+            //    }
+            //}
+            //return null;
         }
-        public static AuthorModel Get(int id)
+        public AuthorModel Get(int id)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.GetAsync("api/Author/Get/" + id).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<AuthorModel>().Result;
-                }
-            }
-            return null;
+            return DoRequest<AuthorModel, AuthorModel>("api/Author/Get/" + id, Enums.RequestType.Get, null);
         }
-        public static ResponseModel Add(AuthorModel model)
+        public ResponseModel Add(AuthorModel model)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.PostAsJsonAsync("api/Author/Add", model).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<ResponseModel>().Result;
-                }
-            }
-            return null;
+            return DoRequest<ResponseModel, AuthorModel>("api/Author/Add/", Enums.RequestType.Post, model);
         }
-        public static ResponseModel Update(AuthorModel model)
+        public ResponseModel Update(AuthorModel model)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.PutAsJsonAsync("api/Author/Update", model).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<ResponseModel>().Result;
-                }
-            }
-            return null;
+            return DoRequest<ResponseModel, AuthorModel>("api/Author/Update/", Enums.RequestType.Put, model);
         }
-        public static ResponseModel Delete(int id)
+        public ResponseModel Delete(int id)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                Utils.ConfigHttpClient(client);
-                HttpResponseMessage response = client.DeleteAsync("api/Author/Delete/" + id).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsAsync<ResponseModel>().Result;
-                }
-            }
-            return null;
+            return DoRequest<ResponseModel, ResponseModel>("api/Author/Delete/" + id, Enums.RequestType.Delete, null);
         }
     }
 }

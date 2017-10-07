@@ -12,11 +12,16 @@ using System.Windows.Forms;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Business;
+using BookLibrary.Forms;
+using Business.Utilities;
+using Business.Bussiness;
+using Business.Models;
 
 namespace BookLibrary
 {
     public partial class LoginForm : Form
     {
+        private UserBusiness _userBusiness = new UserBusiness();
         public LoginForm()
         {
             InitializeComponent();
@@ -26,7 +31,7 @@ namespace BookLibrary
         {
             if (this.IsValidForm())
             {
-                GenericPrincipal principal = UserBusiness.Login(new UserModel() { Email = txtUsername.Text.Trim(), Password = txtPassword.Text.Trim() });
+                GenericPrincipal principal = _userBusiness.Login(new UserModel() { Email = txtUsername.Text.Trim(), Password = txtPassword.Text.Trim() });
                 if (principal != null)
                 {
                     System.Threading.Thread.CurrentPrincipal = principal;

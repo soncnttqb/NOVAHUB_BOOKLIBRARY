@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace API
+namespace APIBusiness.DataTransferObject
 {
-    public class AuthorSearchResultDTO
+    public class CategorySearchResultDTO
     {
         public int Total { get; set; }
-        public List<AuthorDTO> Results { get; set; }
+        public List<CategoryDTO> Results { get; set; }
     }
 }

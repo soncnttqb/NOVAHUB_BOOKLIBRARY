@@ -1,4 +1,7 @@
 ﻿using Business;
+using Business.Bussiness;
+using Business.Models;
+using Business.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,103 +13,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Business.Enums;
+using static Business.Utilities.Enums;
 
-namespace BookLibrary
+namespace BookLibrary.Forms
 {
     public partial class AuthorManagementForm : Form
     {
         public delegate void SaveFormHandler(ResponseModel model);
         public event SaveFormHandler Save;
-        public int Id;
-        //folder temp to storage image in local
-        private string tempFolder = ConfigurationManager.AppSettings[Constants.ConfigKey.TempFolder].ToString();
-        // folder server to storage image 
-        private string serverFolder = ConfigurationManager.AppSettings[Constants.ConfigKey.ServerImageFolder].ToString();
+        public int Id { get; set; }
+        private AuthorBusiness _authorBusiness = new AuthorBusiness();
         private string tempImageFilePath;
-
+        private string serverFolderPath;
         public AuthorManagementForm()
         {
             InitializeComponent();
         }
-        
+
+        private void setTitleForForm()
+        {
+            this.Text = this.Id == 0 ? "Add Author" : "Edit Author";
+        }
+
         private void AuthorManagementForm_Load(object sender, EventArgs e)
         {
-            // create folder to storage image
-            if (!Directory.Exists(tempFolder))
-                Directory.CreateDirectory(tempFolder);
+            serverFolderPath = _authorBusiness.GetFolderImagePath();
+            FileHelper.CreateFolderIfNotExist(FileHelper.TempFolderPath);
+            FileHelper.CreateFolderIfNotExist(serverFolderPath);
 
-            if (!Directory.Exists(serverFolder))
-                Directory.CreateDirectory(serverFolder);
+            setTitleForForm();
+            if (this.Id == 0) return;
 
-            if (this.Id == 0)
+            AuthorModel model = _authorBusiness.Get(this.Id);
+            if (model != null)
             {
-                this.Text = "Add Author";
-            }
-            else
-            {
-                this.Text = "Edit Author";
-                AuthorModel model = AuthorBusiness.Get(this.Id);
-                if (model != null)
+                txtTitle.Text = model.Title;
+                txtDescription.Text = model.Description;
+
+                if (!string.IsNullOrEmpty(model.CoverPhoto) && File.Exists(model.CoverPhoto))
                 {
-                    txtTitle.Text = model.Title;
-                    txtDescription.Text = model.Description;
-
-                    if (!string.IsNullOrEmpty(model.CoverPhoto) && File.Exists(model.CoverPhoto))
+                    try
                     {
-                        //Load image
-                        try
-                        {
-                            FileStream fs = new FileStream(model.CoverPhoto, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                            var bytes = new byte[fs.Length];
-                            fs.Read(bytes, 0, System.Convert.ToInt32(fs.Length));
-                            picCoverPhoto.Image = Image.FromStream(fs);
-                            fs.Close();
-
-                            // copy image to temp
-                            string fileName = Path.GetFileName(model.CoverPhoto);
-                            tempImageFilePath = string.Format(@"{0}\{1}", tempFolder, fileName);
-
-                            if (File.Exists(tempImageFilePath))
-                                File.Delete(tempImageFilePath);
-
-                            System.IO.FileStream _fileStream = new System.IO.FileStream(tempImageFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-                            _fileStream.Write(bytes, 0, bytes.Length);
-                            _fileStream.Close();
-                        }
-                        catch(Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
+                        byte[] bytes = FileHelper.GetByteFromFile(model.CoverPhoto);
+                        string fileName = Path.GetFileName(model.CoverPhoto);
+                        tempImageFilePath = $@"{FileHelper.TempFolderPath}\{fileName}";
+                        FileHelper.CopyImage(bytes, tempImageFilePath);
+                        FileHelper.LoadImage(tempImageFilePath, picCoverPhoto);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                 }
-            }
-        }
-
-        private string CoppyImageToTemp(string coverPhoto)
-        {
-            try
-            {
-                string tempFile = string.Format(@"{0}\{1}", tempFolder, Guid.NewGuid().ToString("N"));
-                File.Copy(coverPhoto, tempFile);
-                return tempFile;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
-        private string CoppyImageToActive(string coverPhoto)
-        {
-            try
-            {
-                string tempFile = string.Format(@"{0}\{1}", tempFolder, Guid.NewGuid().ToString("N"));
-                File.Copy(coverPhoto, tempFile);
-                return tempFile;
-            }
-            catch
-            {
-                return string.Empty;
             }
         }
 
@@ -115,18 +73,18 @@ namespace BookLibrary
             if (IsValidForm())
             {
                 AuthorModel model = new AuthorModel() { Id = this.Id, Title = txtTitle.Text.Trim(), Description = txtDescription.Text.Trim() };
-                if(!string.IsNullOrEmpty(tempImageFilePath) && File.Exists(tempImageFilePath))
+                if (!string.IsNullOrEmpty(tempImageFilePath) && File.Exists(tempImageFilePath))
                 {
-                    model.CoverPhoto= string.Format(@"{0}\{1}", serverFolder, Path.GetFileName(tempImageFilePath));
+                    model.CoverPhoto = $@"{serverFolderPath}\{Path.GetFileName(tempImageFilePath)}";
                 }
-                executeResponse(this.Id == 0 ? AuthorBusiness.Add(model) : AuthorBusiness.Update(model));
+                executeResponse(this.Id == 0 ? _authorBusiness.Add(model) : _authorBusiness.Update(model));
             }
             else
             {
                 ErrorProviderHelper.FocusFirstControl();
             }
         }
-        
+
         private bool IsValidForm()
         {
             ErrorProviderHelper.ClearError();
@@ -142,26 +100,18 @@ namespace BookLibrary
         {
             if (response != null)
             {
-                switch (response.Message)
+                switch (response.ResponseCode)
                 {
-                    case "Success":
+                    case ResponseCode.Success:
                         {
                             if (!string.IsNullOrEmpty(tempImageFilePath) && File.Exists(tempImageFilePath))
                             {
                                 string fileName = Path.GetFileName(tempImageFilePath);
-                                string serverPhotoFilePath = string.Format(@"{0}\{1}", serverFolder, fileName);
+                                string serverPhotoFilePath = $@"{serverFolderPath}\{fileName}";
 
-                                //copy file to image folder
-                                FileStream fs = new FileStream(tempImageFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                                var bytes = new byte[fs.Length];
-                                fs.Read(bytes, 0, System.Convert.ToInt32(fs.Length));
-                                fs.Close();
-
-                                System.IO.FileStream _fileStream = new System.IO.FileStream(serverPhotoFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-                                _fileStream.Write(bytes, 0, bytes.Length);
-                                _fileStream.Close();
-
-                                File.Delete(tempImageFilePath);
+                                byte[] bytes = FileHelper.GetByteFromFile(tempImageFilePath);
+                                FileHelper.CopyImage(bytes, serverPhotoFilePath);
+                                FileHelper.DeleteFile(tempImageFilePath);
                             }
 
                             if (this.Save != null)
@@ -171,12 +121,12 @@ namespace BookLibrary
                             this.Close();
                         }
                         break;
-                    case "NotExist":
+                    case ResponseCode.NotExist:
                         {
                             MessageBox.Show("Author is not exist in system.", MessageBoxCaption.Information.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         break;
-                    case "InUse":
+                    case ResponseCode.InUse:
                         {
                             MessageBox.Show("Author is used in system.", MessageBoxCaption.Information.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
@@ -195,33 +145,6 @@ namespace BookLibrary
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void txtTitle_Validating(object sender, CancelEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtTitle.Text.Trim()))
-            {
-                errorProviderAuthor.SetError(txtTitle, "Author is required.");
-                e.Cancel = true;
-            }
-            else
-            {
-                errorProviderAuthor.SetError(txtTitle, string.Empty);
-                e.Cancel = false;
-            }
-        }
-
-        private void AuthorManagement_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            AutoValidate = AutoValidate.Disable;
-        }
-
-        private void txtTitle_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnSave.PerformClick();
-            }
         }
 
         private void txtTitle_TextChanged(object sender, EventArgs e)
@@ -246,32 +169,14 @@ namespace BookLibrary
                     return;
                 }
 
-                string fileName = Path.GetFileName(file.FileName);
-                if (!string.IsNullOrEmpty(tempImageFilePath) && File.Exists(tempImageFilePath))
-                {
-                    File.Delete(tempImageFilePath);
-                }
-                tempImageFilePath = string.Format(@"{0}\{1}{2}", tempFolder, Guid.NewGuid().ToString("N"), extend);
+                FileHelper.DeleteFile(tempImageFilePath);
 
-                //load image to picturebox
-                FileStream fs = new FileStream(file.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                var bytes = new byte[fs.Length];
-                fs.Read(bytes, 0, System.Convert.ToInt32(fs.Length));
-                picCoverPhoto.Image = Image.FromStream(fs);
-                fs.Close();
-                //copy file to tempfolder
-                System.IO.FileStream _fileStream = new System.IO.FileStream(tempImageFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-                _fileStream.Write(bytes, 0, bytes.Length);
-                _fileStream.Close();
+                tempImageFilePath = $@"{FileHelper.TempFolderPath}\{Guid.NewGuid().ToString("N")}{extend}";
+                byte[] bytes = FileHelper.GetByteFromFile(file.FileName);
+                FileHelper.CopyImage(bytes, tempImageFilePath);
+                FileHelper.LoadImage(tempImageFilePath, picCoverPhoto);
             }
         }
 
-        private void AuthorManagementForm_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                this.Close();
-            }
-        }
     }
 }

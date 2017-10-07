@@ -5,32 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Business
+namespace Business.Utilities
 {
-    public class ControlError
-    {
-        private Control control = null;
-        public Control Control { get { return control; } }
-        private ErrorProvider errorProvider = null;
-        public ErrorProvider ErrorProvider { get { return errorProvider; } }
-        public ControlError(Control ctrl, ErrorProvider errorProvider)
-        {
-            this.control = ctrl;
-            this.errorProvider = errorProvider;
-        }
-    }
     public static class ErrorProviderHelper
     {
         private static List<ControlError> controlErrorList = new List<ControlError>();
         public static void SetErrorMessage(Control ctl, string errorMessage)
         {
-            foreach (ControlError controlError in controlErrorList)
+            ControlError controlError = controlErrorList.FirstOrDefault(x => x.Control == ctl);
+            if (controlError != null)
             {
-                if (ctl == controlError.Control)
-                {
-                    controlError.ErrorProvider.SetError(ctl, errorMessage);
-                    return;
-                }
+                controlError.ErrorProvider.SetError(ctl, errorMessage);
+                return;
             }
             ErrorProvider errorProvider = new ErrorProvider();
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
@@ -41,15 +27,12 @@ namespace Business
         }
         public static void ClearError(Control ctl)
         {
-            foreach (ControlError controlError in controlErrorList)
+            ControlError controlError = controlErrorList.FirstOrDefault(x => x.Control == ctl);
+            if (controlError != null)
             {
-                if (ctl == controlError.Control)
-                {
-                    controlError.ErrorProvider.SetError(controlError.Control, string.Empty);
-                    controlError.ErrorProvider.Clear();
-                    controlErrorList.Remove(controlError);
-                    break;
-                }
+                controlError.ErrorProvider.SetError(controlError.Control, string.Empty);
+                controlError.ErrorProvider.Clear();
+                controlErrorList.Remove(controlError);
             }
         }
         public static void ClearError()
@@ -64,10 +47,7 @@ namespace Business
         public static void FocusFirstControl()
         {
             ControlError firstControl = controlErrorList.FirstOrDefault();
-            if (firstControl != null)
-            {
-                firstControl.Control.Focus();
-            }
+            firstControl?.Control.Focus();
         }
     }
 }

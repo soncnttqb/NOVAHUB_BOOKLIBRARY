@@ -1,4 +1,4 @@
-﻿namespace BookLibrary
+﻿namespace BookLibrary.UcControls
 {
     partial class UcPaging
     {
@@ -39,6 +39,7 @@
             // 
             // btnFirst
             // 
+            this.btnFirst.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFirst.Location = new System.Drawing.Point(3, 3);
             this.btnFirst.Name = "btnFirst";
             this.btnFirst.Size = new System.Drawing.Size(34, 23);
@@ -49,6 +50,7 @@
             // 
             // btnPrevious
             // 
+            this.btnPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPrevious.Location = new System.Drawing.Point(43, 3);
             this.btnPrevious.Name = "btnPrevious";
             this.btnPrevious.Size = new System.Drawing.Size(33, 23);
@@ -59,6 +61,7 @@
             // 
             // btnNext
             // 
+            this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNext.Location = new System.Drawing.Point(187, 3);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(31, 23);
@@ -69,6 +72,7 @@
             // 
             // btnLast
             // 
+            this.btnLast.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLast.Location = new System.Drawing.Point(224, 3);
             this.btnLast.Name = "btnLast";
             this.btnLast.Size = new System.Drawing.Size(30, 23);
@@ -79,6 +83,7 @@
             // 
             // numPageIndex
             // 
+            this.numPageIndex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPageIndex.Location = new System.Drawing.Point(82, 5);
             this.numPageIndex.Minimum = new decimal(new int[] {
             1,
@@ -97,6 +102,7 @@
             // 
             // lblTotalPage
             // 
+            this.lblTotalPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalPage.AutoSize = true;
             this.lblTotalPage.Location = new System.Drawing.Point(130, 8);
             this.lblTotalPage.Name = "lblTotalPage";

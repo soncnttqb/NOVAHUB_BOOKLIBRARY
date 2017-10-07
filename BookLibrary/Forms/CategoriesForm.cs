@@ -10,13 +10,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Business;
 using System.Threading;
-using static Business.Enums;
+using Business.Models;
+using static Business.Utilities.Enums;
+using Business.Utilities;
+using Business.Bussiness;
 
-namespace BookLibrary
+namespace BookLibrary.Forms
 {
     public partial class CategoriesForm : Form
     {
         private BasePagingModel PagingModel = new BasePagingModel() { PageIndex = 1 };
+        private CategoryBusiness _categoryBusiness = new CategoryBusiness();
         public CategoriesForm()
         {
             InitializeComponent();
@@ -31,7 +35,7 @@ namespace BookLibrary
 
         private void categoryManagementForm_Save(ResponseModel response)
         {
-            if (response != null && "Success".Equals(response.Message))
+            if (response != null && ResponseCode.Success.Equals(response.ResponseCode))
                 LoadGrid();
         }
 
@@ -40,8 +44,6 @@ namespace BookLibrary
             grdListCategories.AutoGenerateColumns = false;
             LoadGrid();
             btnDelete.Visible = Thread.CurrentPrincipal.IsInRole(Enums.RoleTpe.Admin.ToString());
-            grdListCategories.CellDoubleClick += GrdListCategories_CellDoubleClick;
-            ucPagingCategory.ExecutePaging += UcPagingCategory_ExecutePaging;
         }
         private void UcPagingCategory_ExecutePaging(int pageIndex)
         {
@@ -61,7 +63,7 @@ namespace BookLibrary
 
         private void LoadGrid()
         {
-            var result = CategoryBusiness.Search(PagingModel);
+            var result = _categoryBusiness.Search(PagingModel);
             grdListCategories.DataSource = result.Results;
             ucPagingCategory.TotalRecord = result.Total;
             btnEdit.Enabled = btnDelete.Enabled = grdListCategories.RowCount > 0;
@@ -84,8 +86,8 @@ namespace BookLibrary
         {
             if(MessageBox.Show("Are you sure want to delete this catetory?", MessageBoxCaption.Confirmation.ToString(),MessageBoxButtons.OKCancel,MessageBoxIcon.Question) == DialogResult.OK)
             {
-                var response = CategoryBusiness.Delete((grdListCategories.CurrentRow.DataBoundItem as CategoryModel).Id);
-                if(response!=null && "Success".Equals(response.Message))
+                var response = _categoryBusiness.Delete((grdListCategories.CurrentRow.DataBoundItem as CategoryModel).Id);
+                if(response!=null && ResponseCode.Success.Equals(response.ResponseCode))
                 {
                     MessageBox.Show("Category has deleted successful.", MessageBoxCaption.Information.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadGrid();

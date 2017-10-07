@@ -1,4 +1,4 @@
-﻿namespace BookLibrary
+﻿namespace BookLibrary.Forms
 {
     partial class AuthorManagementForm
     {
@@ -44,6 +44,7 @@
             // 
             // txtDescription
             // 
+            this.txtDescription.AcceptsReturn = true;
             this.txtDescription.Location = new System.Drawing.Point(75, 155);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
@@ -58,7 +59,6 @@
             this.txtTitle.Size = new System.Drawing.Size(358, 20);
             this.txtTitle.TabIndex = 2;
             this.txtTitle.TextChanged += new System.EventHandler(this.txtTitle_TextChanged);
-            this.txtTitle.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtTitle_KeyUp);
             // 
             // label2
             // 
@@ -90,6 +90,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(357, 295);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -124,8 +125,10 @@
             // 
             // AuthorManagementForm
             // 
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(458, 341);
             this.Controls.Add(this.btnChangePhoto);
             this.Controls.Add(this.btnCancel);
@@ -142,7 +145,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Author";
             this.Load += new System.EventHandler(this.AuthorManagementForm_Load);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.AuthorManagementForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.picCoverPhoto)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAuthor)).EndInit();
             this.ResumeLayout(false);
