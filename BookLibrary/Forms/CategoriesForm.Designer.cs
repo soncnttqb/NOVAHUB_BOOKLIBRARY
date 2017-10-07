@@ -49,7 +49,8 @@ namespace BookLibrary.Forms
             this.grdListCategories.AllowUserToDeleteRows = false;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Info;
             this.grdListCategories.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.grdListCategories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.grdListCategories.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grdListCategories.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdListCategories.BackgroundColor = System.Drawing.Color.White;
@@ -78,7 +79,7 @@ namespace BookLibrary.Forms
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.grdListCategories.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.grdListCategories.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdListCategories.Size = new System.Drawing.Size(807, 184);
+            this.grdListCategories.Size = new System.Drawing.Size(807, 285);
             this.grdListCategories.TabIndex = 0;
             this.grdListCategories.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GrdListCategories_CellDoubleClick);
             // 
@@ -129,8 +130,8 @@ namespace BookLibrary.Forms
             // 
             // ucPagingCategory
             // 
-            this.ucPagingCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ucPagingCategory.Location = new System.Drawing.Point(557, 232);
+            this.ucPagingCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ucPagingCategory.Location = new System.Drawing.Point(557, 333);
             this.ucPagingCategory.Name = "ucPagingCategory";
             this.ucPagingCategory.PageIndex = 1;
             this.ucPagingCategory.Size = new System.Drawing.Size(262, 31);
@@ -142,7 +143,7 @@ namespace BookLibrary.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(831, 299);
+            this.ClientSize = new System.Drawing.Size(831, 376);
             this.Controls.Add(this.ucPagingCategory);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);

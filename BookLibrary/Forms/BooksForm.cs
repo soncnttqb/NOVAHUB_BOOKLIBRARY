@@ -132,6 +132,8 @@ namespace BookLibrary.Forms
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            // not catch Accept button search when change page index in ucPaing
+            if (this.ActiveControl == ucPagingBook) return;
             if (ucPagingBook.PageIndex != 1)
             {
                 ucPagingBook.ResetPaging();
